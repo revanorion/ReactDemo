@@ -1,12 +1,15 @@
-import * as WeatherForecasts from './WeatherForecasts';
-import * as Counter from './Counter';
-import * as ExternalPaymentTypes from './ExternalPaymentTypes';
+import * as WeatherForecasts from '../actions/WeatherForecasts';
+import * as Counter from '../actions/Counter';
+import * as ExternalPaymentTypes from '../actions/ExternalPaymentType';
+import * as ExternalPaymentTypeList from '../actions/ExternalPaymentType/ListReducer';
+import * as ExternalPaymentTypeForm from '../actions/ExternalPaymentType/FormReducer';
 
 // The top-level state object
 export interface ApplicationState {
     counter: Counter.CounterState;
     weatherForecasts: WeatherForecasts.WeatherForecastsState;
-    externalPaymentTypes: ExternalPaymentTypes.ExternalPaymentTypesState;  
+    externalPaymentTypes: ExternalPaymentTypes.ExternalPaymentTypeListState;  
+    activePaymentType: ExternalPaymentTypes.ExternalPaymentTypeFormState;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -15,7 +18,8 @@ export interface ApplicationState {
 export const reducers = {
     counter: Counter.reducer,
     weatherForecasts: WeatherForecasts.reducer,
-    externalPaymentTypes: ExternalPaymentTypes.reducer
+    externalPaymentTypes: ExternalPaymentTypeList.reducer,
+    activePaymentType: ExternalPaymentTypeForm.reducer
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are

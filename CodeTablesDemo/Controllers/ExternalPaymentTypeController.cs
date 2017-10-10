@@ -90,5 +90,16 @@ namespace InventoryManager.Controllers
                 //.Skip(index);
             return Json(new { success = true, model = externalPaymentTypes });
         }
+
+
+
+        [HttpGet("[action]")]
+        public JsonResult GetExternalPaymentType(int paymentTypeSeq)
+        {
+            var payment = repository.GetSet<ExternalPaymentType>(x => x.PaymentTypeSeq == paymentTypeSeq).FirstOrDefault();
+            if(payment!=null)
+                return Json(new { success = true, model = payment });
+            return Json(new { success = false, model = payment });
+        }
     }
 }

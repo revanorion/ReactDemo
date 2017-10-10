@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import * as ExternalPaymentTypesState from '../store/ExternalPaymentTypes';
-
+import { ApplicationState } from '../../store';
+import * as ExternalPaymentTypesState from '../../actions/ExternalPaymentType';
+import { actionCreators } from '../../actions/ExternalPaymentType/ListReducer';
 // At runtime, Redux will merge together...
 type ExternalPaymentTypeProps =
-    ExternalPaymentTypesState.ExternalPaymentTypesState        // ... state we've requested from the Redux store
-    & typeof ExternalPaymentTypesState.actionCreators      // ... plus action creators we've requested
+    ExternalPaymentTypesState.ExternalPaymentTypeListState        // ... state we've requested from the Redux store
+    & typeof actionCreators      // ... plus action creators we've requested
     & RouteComponentProps<{ index: number }>; // ... plus incoming routing parameters
 
-class ExternalPaymentType extends React.Component<ExternalPaymentTypeProps, {}> {
+class ExternalPaymentTypeList extends React.Component<ExternalPaymentTypeProps, {}> {
     componentWillMount() {
         // This method runs when the component is first added to the page
         let index = (this.props.match.params.index) || 0;
@@ -43,8 +43,12 @@ class ExternalPaymentType extends React.Component<ExternalPaymentTypeProps, {}> 
             <tbody>
                 {this.props.externalPaymentTypes.map(externalPaymentType =>
                     <tr key={externalPaymentType.paymentTypeSeq}>
-                        <td>{externalPaymentType.paymentTypeSeq}</td>
-                        <td>{externalPaymentType.paymentTypeDescription}</td>                        
+                        <td>
+                            <Link to={`/ExternalPaymentTypeForm/${externalPaymentType.paymentTypeSeq}`}>
+                                {externalPaymentType.paymentTypeSeq}
+                            </Link>
+                        </td>
+                        <td>{externalPaymentType.paymentTypeDescription}</td>
                     </tr>
                 )}
             </tbody>
@@ -65,5 +69,5 @@ class ExternalPaymentType extends React.Component<ExternalPaymentTypeProps, {}> 
 
 export default connect(
     (state: ApplicationState) => state.externalPaymentTypes, // Selects which state properties are merged into the component's props
-    ExternalPaymentTypesState.actionCreators                 // Selects which action creators are merged into the component's props
-)(ExternalPaymentType) as typeof ExternalPaymentType;
+    actionCreators                                           // Selects which action creators are merged into the component's props
+)(ExternalPaymentTypeList) as typeof ExternalPaymentTypeList;

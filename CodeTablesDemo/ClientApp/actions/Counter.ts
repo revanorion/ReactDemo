@@ -1,4 +1,5 @@
 import { Action, Reducer } from 'redux';
+import {INCREMENT_COUNT,DECREMENT_COUNT} from './ActionTypes';
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
@@ -12,8 +13,8 @@ export interface CounterState {
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 // Use @typeName and isActionType for type detection that works even after serialization/deserialization.
 
-interface IncrementCountAction { type: 'INCREMENT_COUNT' }
-interface DecrementCountAction { type: 'DECREMENT_COUNT' }
+interface IncrementCountAction { type: INCREMENT_COUNT }
+interface DecrementCountAction { type: DECREMENT_COUNT }
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
@@ -24,8 +25,8 @@ type KnownAction = IncrementCountAction | DecrementCountAction;
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
 
 export const actionCreators = {
-    increment: () => <IncrementCountAction>{ type: 'INCREMENT_COUNT' },
-    decrement: () => <DecrementCountAction>{ type: 'DECREMENT_COUNT' }
+    increment: () => <IncrementCountAction>{ type: INCREMENT_COUNT.VAL },
+    decrement: () => <DecrementCountAction>{ type: DECREMENT_COUNT.VAL }
 };
 
 // ----------------
@@ -33,9 +34,9 @@ export const actionCreators = {
 
 export const reducer: Reducer<CounterState> = (state: CounterState, action: KnownAction) => {
     switch (action.type) {
-        case 'INCREMENT_COUNT':
+        case INCREMENT_COUNT.VAL:
             return { count: state.count + 1 };
-        case 'DECREMENT_COUNT':
+        case DECREMENT_COUNT.VAL:
             return { count: state.count - 1 };
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
